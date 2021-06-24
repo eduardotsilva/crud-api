@@ -34,7 +34,7 @@ public class ProdutoService {
         return ProdutoVO.create(produto);
     }
 
-    public ProdutoVO findaById(Long id) {
+    public ProdutoVO findById(Long id) {
         var entity = produtoRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("No records found for this ID")
         );
