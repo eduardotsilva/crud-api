@@ -2,6 +2,7 @@ package com.eduardo.crud.controller;
 
 import com.eduardo.crud.data.vo.ProdutoVO;
 import com.eduardo.crud.services.ProdutoService;
+import org.apache.coyote.Response;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -40,24 +41,45 @@ public class ProdutoController {
 
     @GetMapping(produces = {"application/json", "application/xml", "application/x-yaml"})
     public ResponseEntity<?> findByAll
-    (
-       @RequestParam(value = "page", defaultValue = "0") int page,
-       @RequestParam(value = "limit", defaultValue = "12") int limit,
-       @RequestParam(value = "direction", defaultValue = "asc") String direction
-    )
-    {
+            (
+                    @RequestParam(value = "page", defaultValue = "0") int page,
+                    @RequestParam(value = "limit", defaultValue = "12") int limit,
+                    @RequestParam(value = "direction", defaultValue = "asc") String direction
+            ) {
         var sortDirection = "desc".equalsIgnoreCase(direction) ? Sort.Direction.DESC : Sort.Direction.ASC;
 
-        Pageable pageable = PageRequest.of(page,limit,Sort.by(sortDirection,"nome"));
+        Pageable pageable = PageRequest.of(page, limit, Sort.by(sortDirection, "nome"));
 
         Page<ProdutoVO> produtos = produtoService.findAll(pageable);
 
         produtos
                 .stream()
-                .forEach(p  -> p.add(linkTo(methodOn(ProdutoController.class).findById(p.getId())).withSelfRel()));
+                .forEach(p -> p.add(linkTo(methodOn(ProdutoController.class).findById(p.getId())).withSelfRel()));
 
         PagedModel<EntityModel<ProdutoVO>> pagedModel = assembler.toModel(produtos);
-         return new ResponseEntity<>(pagedModel,HttpStatus.OK);
+        return new ResponseEntity<>(pagedModel, HttpStatus.OK);
     }
 
+    @PostMapping(produces = {"application/json", "application/xml", "application/x-yaml"},
+            consumes = {"application/json", "application/xml", "application/x-yaml"})
+    public ProdutoVO create(@RequestBody ProdutoVO produtoVO) {
+        ProdutoVO proVo = produtoService.create(produtoVO);
+        proVo.add(linkTo(methodOn(ProdutoController.class).findById(proVo.getId())).withSelfRel());
+        return proVo;
+    }
+
+    @PutMapping(produces = {"application/json", "application/xml", "application/x-yaml"},
+            consumes = {"application/json", "application/xml", "application/x-yaml"})
+    public ProdutoVO update(@RequestBody ProdutoVO produtoVO) {
+        ProdutoVO proVo = produtoService.update(produtoVO);
+        proVo.add(linkTo(methodOn(ProdutoController.class).findById(proVo.getId())).withSelfRel());
+        return proVo;
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable("id") Long id) {
+        produtoService.delete(id);
+        return ResponseEntity.ok().build();
+    }
 }
+
