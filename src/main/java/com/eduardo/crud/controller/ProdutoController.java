@@ -40,7 +40,7 @@ public class ProdutoController {
     }
 
     @GetMapping(produces = {"application/json", "application/xml", "application/x-yaml"})
-    public ResponseEntity<?> findByAll
+    public ResponseEntity<?> findAll
             (
                     @RequestParam(value = "page", defaultValue = "0") int page,
                     @RequestParam(value = "limit", defaultValue = "12") int limit,
