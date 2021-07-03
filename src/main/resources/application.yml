@@ -21,6 +21,11 @@ spring:
     username: microservices
     password: microservices123
 
+crud:
+  rabbitmq:
+    exchange: crud.exchange
+    routingkey: crud.produto.routingkey
+
 
 
 
