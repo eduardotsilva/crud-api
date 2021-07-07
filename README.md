@@ -24,5 +24,6 @@
 >  "estoque": 2,
 >  "preco": 399
 > }
+> A message será enviada para microserviço-pagamento 
 
 
