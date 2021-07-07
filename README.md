@@ -10,5 +10,19 @@
 
 # microserviço crud (produto)
 
+#Desafio
+1. Arquitetura Microserviços com Spring Cloud
+2. RabbitMQ (Service Broker) 
+3. Spring Boot e Security
+
+
 #Execução
-1.[Executar primeiro o microserviço-auth](https://github.com/eduardotsilva/microservico-auth/edit/main/README.md) 
+1. [Executar primeiro o microserviço-auth](https://github.com/eduardotsilva/microservico-auth/edit/main/README.md) 
+2. Adicionar o token no headers como Authorization Bearer com verbo POST para o endpoint http://localhost:8081/crud/produto/
+>  {
+>   "nome": "Controle xbox asdas",
+>  "estoque": 2,
+>  "preco": 399
+> }
+
+
